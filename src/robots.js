@@ -1,32 +1,32 @@
 export const robots = [
    {
     id: 1,
-    name: "bianca",
+    name: "Bianca",
     email: "al@sdflj.dease"
    },  {
     id: 2,
-    name: "caro",
+    name: "Caro",
     email: "dasdrsaf@sdf.saf"
   },
    {
     id: 3,
-    name: "marie",
+    name: "Marie",
     email: "dsaf@sdf.dsf"
   },
   {
     id: 4,
-    name: "marou",
+    name: "Marou",
     email: "dsaf@sdf.dsaf"
   },
   {
     id: 5,
-    name: "nicole",
+    name: "Nicole",
     email: "dsasdff@sdf.dsa"
   },
 
   {
     id: 6,
-    name: "nora",
+    name: "Nora",
     email: "dsaeqrf@sdf.dsf"
   }
 ]
