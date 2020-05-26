@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import CardList from '../components/Cardlist'
 import Scroll from '../components/Scroll'
 import Searchbox from '../components/Searchbox'
+import ErrorBoundry from '../components/ErrorBoundry'
 import {robots} from '../robots'
 
 class App extends Component {
@@ -11,6 +12,9 @@ class App extends Component {
       robots: [],
       input: ""
     }
+  }
+  componentDidCatch(error, info) {
+    this.setState({hasError: true})
   }
 
   componentDidMount () {
@@ -36,7 +40,9 @@ class App extends Component {
               <Searchbox inputChange={this.handleInput} />
             </div>
             <Scroll>
-              <CardList robots={filteredRobots} />
+              <ErrorBoundry>
+                <CardList robots={filteredRobots} />
+              </ErrorBoundry>
             </Scroll>
           </div>
           );
