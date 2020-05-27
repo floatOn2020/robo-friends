@@ -1,52 +1,60 @@
 import React, {Component} from 'react';
-import CardList from '../components/Cardlist'
-import Scroll from '../components/Scroll'
-import Searchbox from '../components/Searchbox'
-import ErrorBoundry from '../components/ErrorBoundry'
-import {robots} from '../robots'
+import {connect} from 'react-redux';
+import CardList from '../components/Cardlist';
+import SearchBox from '../components/Searchbox';
+import Scroll from '../components/Scroll';
+import ErrorBoundry from '../components/ErrorBoundry';
 
-class App extends Component {
-  constructor(){
-    super()
-    this.state = {
-      robots: [],
-      input: ""
-    }
-  }
-  componentDidCatch(error, info) {
-    this.setState({hasError: true})
-  }
+import 'tachyons'
 
-  componentDidMount () {
-    fetch('https://jsonplaceholder.typicode.com/users')
-    .then(response => response.json())
-    .then(users => this.setState({ robots: users }));
-  }
+import{setSearchField} from '../actions'
 
-  handleInput = (e) => {
-    this.setState({ input: e.target.value })
-  }
-
-  render () {
-    const filteredRobots = this.state.robots.filter(robot => {
-      return robot.name.toLowerCase().includes(this.state.input.toLowerCase())
-    })
-    return !this.state.robots.length ?
-       <h1>Loading...</h1> :
-         (
-          <div className="tc">
-            <div className="header">
-              <h1>Robofriends</h1>
-              <Searchbox inputChange={this.handleInput} />
-            </div>
-            <Scroll>
-              <ErrorBoundry>
-                <CardList robots={filteredRobots} />
-              </ErrorBoundry>
-            </Scroll>
-          </div>
-          );
+const mapStateToProps = state => {
+  return{
+    searchField: state.searchField
   }
 }
 
-export default App;
+const mapDispatchToProps = dispatch => {
+ return {
+  onSearchChange: (event) => dispatch(setSearchField(event.target.value))
+}}
+
+class App extends Component {
+  constructor(){
+    super();
+    this.state = {
+      robots: []
+    }
+  }
+
+componentDidMount(){
+  fetch('https://jsonplaceholder.typicode.com/users')
+  .then(response => response.json())
+  .then(users => this.setState({robots: users}));
+
+}
+
+  render() {
+    const {robots} = this.state
+    const {searchField, onSearchChange} = this.props
+    const filteredRobots = robots.filter(robot => {
+      return robot.name.toLowerCase().includes(searchField.toLowerCase())
+    })
+    return !robots.length ?
+      <h1>LOADING</h1> :
+      (
+        <div className="tc ">
+          <h1 className='f1'> Robo Friends</h1>
+          <SearchBox searchChange={onSearchChange} searchField={searchField}/>
+         <Scroll>
+           <ErrorBoundry>
+              <CardList robots={filteredRobots}/>
+           </ErrorBoundry>
+         </Scroll>
+        </div>
+      );
+  }
+}
+
+export default connect(mapStateToProps,mapDispatchToProps)(App);
